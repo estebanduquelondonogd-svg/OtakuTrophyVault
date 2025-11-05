@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Otaku Trophy Vault 🎮</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  /* Reset y Base */
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #100f1c 0%, #000000 100%); /* Degradado oscuro */
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    text-align: center;
+    padding: 30px 20px 20px;
+    background: #1c1a2c;
+    border-bottom: 5px solid #6a0dad; /* Púrpura elegante */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  }
+  h1 {
+    font-family: "Press Start 2P", cursive;
+    font-size: 24px;
+    color: #ffcc00;
+    text-shadow: 2px 2px #000;
+    margin-bottom: 5px;
+  }
+  /* Estilo del Contenedor de Juego (más orgánico) */
+  .game {
+    background: #1f1e2f; /* Fondo oscuro y suave */
+    border-radius: 15px; /* Bordes suaves */
+    margin: 30px auto;
+    max-width: 650px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.05); /* Sombra suave y brillo interior */
+    transition: transform 0.3s ease;
+  }
+  .game:hover {
+    transform: translateY(-5px); /* Pequeño efecto al pasar el mouse */
+  }
+  .game .game-cover {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 3px solid #6a0dad;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  }
+  .game .game-icon {
+    width: 80px;
+    height: auto;
+    border-radius: 50%; /* Icono redondo */
+    display: block;
+    margin: 10px auto 20px;
+    border: 3px solid #ffcc00;
+  }
+  .game-quote {
+    font-style: italic;
+    color: #c9c5d1;
+    margin-bottom: 25px;
+    font-size: 1.1em;
+    padding: 0 15px;
+  }
+  h2 {
+    color: #ffcc00;
+    text-align: center;
+    font-size: 1.8em;
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  /* Estilo de la Lista de Trofeos (más suave) */
+  li {
+    background: #28273d; /* Fondo ligeramente diferente al contenedor */
+    margin: 8px 0;
+    padding: 15px;
+    border-radius: 8px; /* Esquinas redondeadas para los ítems */
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  li:hover { 
+    background: #33324d; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  li.checked {
+    text-decoration: line-through;
+    color: #888;
+    background: #181729;
+    box-shadow: none;
+  }
+
+  /* --- CLASES DE ESTILO TIPOGRÁFICO PARA TROFEOS (NUEVO) --- */
+  .trophy-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    margin-right: 8px;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+  }
+  
+  .trophy-platino {
+    color: #000;
+    background-color: #e0e0e0; 
+    border: 1px solid #fff;
+  }
+  .trophy-platino + span { color: #fff; text-shadow: 0 0 5px #fff; } /* Destaca el texto del platino */
+
+  .trophy-oro {
+    color: #4b3600;
+    background-color: #ffd700;
+    border: 1px solid #fff3c9;
+  }
+  .trophy-oro + span { color: #ffd700; } /* Destaca el texto del oro */
+
+  .trophy-plata {
+    color: #4a4a4a;
+    background-color: #c0c0c0;
+    border: 1px solid #f0f0f0;
+  }
+  .trophy-plata + span { color: #c0c0c0; } /* Destaca el texto de la plata */
+
+  .trophy-bronce {
+    color: #58390b;
+    background-color: #cd7f32;
+    border: 1px solid #ffcc99;
+  }
+  .trophy-bronce + span { color: #cd7f32; } /* Destaca el texto del bronce */
+  /* ----------------------------------------------------------- */
+
+  /* Estilos para el progreso */
+  .progress-bar-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    height: 25px; /* Aumenta la altura para mejor visualización */
+  }
+  .progress-bar-container {
+    flex-grow: 1;
+    background: #33324d;
+    border: 2px solid #6a0dad;
+    border-radius: 12px;
+    height: 100%;
+    overflow: hidden;
+    margin-right: 15px;
+  }
+  .progress-bar {
+    background: linear-gradient(90deg, #ffcc00, #ff4500); /* Degradado en la barra */
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+  .progress-percentage {
+    font-weight: 700;
+    color: #ffcc00;
+    font-size: 1.1em;
+    width: 50px;
+    text-align: right;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #6a0dad;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 Otaku Trophy Vault 🏆</h1>
+  <p>Un registro visualmente atractivo de tu progreso en PlayStation.</p>
+</header>
+
+<div class="game">
+  <img class="game-cover" src="imagenes/ctr_cover.jpg" alt="Crash Team Racing Cover">
+  <p class="game-quote">"¡WOAH! ¡Es hora de un poco de destrucción turbo!" - Crash Bandicoot</p>
+  <img class="game-icon" src="imagenes/ctr_icon.png" alt="Crash Team Racing Icon">
+  <h2>Crash Team Racing: Nitro-Fueled</h2>
+  
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar-container">
+      <div class="progress-bar"></div>
+    </div>
+    <span class="progress-percentage">0%</span>
+  </div>
+  
+  <ul id="ctr-trophies">
+    <li><span class="trophy-badge trophy-platino">PLATINO</span><span>Woah!</span> — Obtén todos los demás trofeos</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Interstellar Challenge</span> — Vence a Nitros Oxide</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Back Down to Earth</span> — Completa el Modo Aventura en dificultad Difícil</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Photo Finish</span> — Gana una carrera cruzando la meta con menos de 0.01 segundos de diferencia</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Me Fast, You Slow</span> — Derrota a Papu Papu</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Komodone</span> — Derrota a Komodo Joe</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>The Chicken Whisperer</span> — Derrota a Chick y Stew</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Off to a Good Start</span> — Gana tu primera carrera en Aventura</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Crazier than the Ripper</span> — Derrota a Ripper Roo</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Pinstripe's Pride</span> — Derrota a Pinstripe</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Arena Explorer</span> — Completa un Crystal Challenge</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Spare Change</span> — Gana un desafío CTR</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Not So Fast</span> — Desbloquea todos los modos de carrera de batalla</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Podium Power</span> — Termina en el podio en 5 pistas distintas</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Drift is the Way</span> — Realiza un Drifting Turbo 5 veces consecutivas</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Power Slide Pro</span> — Realiza un Turbo Perfecto 3 veces seguidas</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Bomb's Away!</span> — Derrota a un oponente con una Bomba</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Boing!</span> — Salta 10 veces seguidas en una carrera</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Turbo Boost Master</span> — Activa el Turbo 50 veces</li>
+  </ul>
+</div>
+
+<div class="game">
+  <img class="game-cover" src="imagenes/gow_cover.jpg" alt="God of War Cover">
+  <p class="game-quote">"No seas lo que fui. Sé mejor." - Kratos</p>
+  <img class="game-icon" src="imagenes/gow_icon.png" alt="God of War Icon">
+  <h2>God of War</h2>
+  
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar-container">
+      <div class="progress-bar"></div>
+    </div>
+    <span class="progress-percentage">0%</span>
+  </div>
+  
+  <ul id="gow-trophies">
+    <li><span class="trophy-badge trophy-platino">PLATINO</span><span>Father and Son</span> — Obtén todos los trofeos</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Chooser of the Slain</span> — Derrota a las nueve Valquirias</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Unfinished Business</span> — Ayuda a todos los espíritus perdidos de Midgard</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Trascendent</span> — Mejora por completo un conjunto de armadura de la niebla de Ivaldi</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Allfather Blinded</span> — Encuentra y abate a los 51 Cuervos de Odín</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Dragon Slayer</span> — Libera a los 3 dragones cautivos</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Dangerous Skies</span> — Libera todos los dragones</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Promising Lands</span> — Recorre todos los reinos</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Treasure Hunter</span> — Utiliza los mapas del tesoro para encontrar todos los alijos</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Death’s Ancient Hands</span> — Derrota a todos los Ancestros</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>The Journey Begins</span> — Completa el prólogo</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>The Marked Trees</span> — Acaba con los 6 árboles marcados en el bosque</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Dwarven Ingenuity</span> — Mejora una pieza de equipo</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>I Just Got Here</span> — Llega a Midgard</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Feels Right</span> — Utiliza el trineo de lobos</li>
+  </ul>
+</div>
+
+<div class="game">
+  <img class="game-cover" src="imagenes/spiderman_cover.jpg" alt="Spider-Man Cover">
+  <p class="game-quote">"Con un gran poder... viene una gran responsabilidad." - Peter Parker (Spider-Man)</p>
+  <img class="game-icon" src="imagenes/spiderman_icon.png" alt="Spider-Man Icon">
+  <h2>Marvel’s Spider-Man</h2>
+  
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar-container">
+      <div class="progress-bar"></div>
+    </div>
+    <span class="progress-percentage">0%</span>
+  </div>
+  
+  <ul id="spidey-trophies">
+    <li><span class="trophy-badge trophy-platino">PLATINO</span><span>Be Greater</span> — Consigue todos los trofeos</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Science FTW!</span> — Completa todos los desafíos de laboratorio</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Snappy Dresser</span> — Crea los 5 trajes nuevos</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>A Bit of a Fixer-Upper</span> — Completa todos los proyectos opcionales de la estación de investigación</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Superior Spider-Man</span> — Desbloquea todas las habilidades</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Neighborhood Hero</span> — Completa todos los delitos en un distrito</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Arachnophobia</span> — Realiza 75 derribos sigilosos</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Back to the Basics</span> — Consigue todos los coleccionables de mochila</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Master of One-Liners</span> — Realiza 50 bromas en combate</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Sticky and Tricky</span> — Realiza 100 acrobacias</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>The Gauntlet</span> — Completa todos los desafíos de Taskmaster</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Demons Emerge</span> — Completa la misión "El Despertar"</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>All Clear?</span> — Completa todas las bases de Fisk</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Inner Demon</span> — Consigue el primer trofeo</li>
+  </ul>
+</div>
+
+<div class="game">
+  <img class="game-cover" src="imagenes/got_cover.jpg" alt="Ghost of Tsushima Cover">
+  <p class="game-quote">"Soy el Fantasma. Y haré lo que sea para proteger a mi gente." - Jin Sakai</p>
+  <img class="game-icon" src="imagenes/got_icon.png" alt="Ghost of Tsushima Icon">
+  <h2>Ghost of Tsushima</h2>
+  
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar-container">
+      <div class="progress-bar"></div>
+    </div>
+    <span class="progress-percentage">0%</span>
+  </div>
+  
+  <ul id="got-trophies">
+    <li><span class="trophy-badge trophy-platino">PLATINO</span><span>Living Legend</span> — Obtén todos los trofeos</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>The Unbending Samurai</span> — Completa el juego en dificultad difícil</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>All in the Wrist</span> — Consigue todos los encantos</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Of Blood and Brawn</span> — Consigue todas las armaduras</li>
+    <li><span class="trophy-badge trophy-oro">ORO</span><span>Light from the Darkness</span> — Descubre todos los faros</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Teller of Tales</span> — Completa todas las Misiones Míticas</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Flash of Steel</span> — Derrota a enemigos con cada postura de combate</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>A Debt Repaid</span> — Completa todas las misiones de Masako</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>The Headstrong Thief</span> — Completa todas las misiones de Yuna</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>The Warrior Monk</span> — Completa todas las misiones de Norio</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>Birthright</span> — Completa todas las misiones de Kenji</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>The Vengeful Warrior</span> — Completa todas las misiones de Ryuzo</li>
+    <li><span class="trophy-badge trophy-plata">PLATA</span><span>The Ghost</span> — Desbloquea todas las habilidades de Ghost</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Gathering Storm</span> — Empuña la Hoja Rota de Sakai</li>
+    <li><span class="trophy-badge trophy-bronce">BRONCE</span><span>Dirge of the Fallen Forge</span> — Consigue el primer trofeo</li>
+  </ul>
+</div>
+
+<footer>Trofeos obtenidos de PSNProfiles y PlayStationTrophies © 2025</footer>
+
+<script>
+  document.querySelectorAll("ul").forEach(list => {
+    const id = list.id;
+    const saved = JSON.parse(localStorage.getItem(id)) || []; 
+    const allListItems = list.querySelectorAll("li");
+    const totalTrophies = allListItems.length;
+    
+    const gameDiv = list.closest('.game');
+    const progressBar = gameDiv ? gameDiv.querySelector('.progress-bar') : null;
+    const percentageText = gameDiv ? gameDiv.querySelector('.progress-percentage') : null;
+
+    const updateProgress = () => {
+      const checkedItems = Array.from(list.querySelectorAll("li.checked"));
+      const completedTrophies = checkedItems.length;
+      const percentage = totalTrophies > 0 ? (completedTrophies / totalTrophies) * 100 : 0;
+      const roundedPercentage = percentage.toFixed(0);
+      
+      if (progressBar) {
+        progressBar.style.width = `${roundedPercentage}%`;
+      }
+      
+      if (percentageText) {
+          percentageText.textContent = `${roundedPercentage}%`;
+      }
+
+      const checkedIndices = checkedItems
+        .map(l => Array.from(allListItems).indexOf(l));
+      localStorage.setItem(id, JSON.stringify(checkedIndices));
+    };
+    
+    allListItems.forEach((li, i) => {
+      if (saved.includes(i)) li.classList.add("checked");
+      li.addEventListener("click", () => {
+        li.classList.toggle("checked");
+        updateProgress();
+      });
+    });
+
+    updateProgress();
+  });
+</script>
+</body>
+</html>
